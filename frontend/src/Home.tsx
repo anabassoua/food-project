@@ -31,7 +31,10 @@ export default function Home() {
             recipes.map((recipe) => (
               <div key={recipe.id} className="recipe-box">
                 <h1>{recipe.name}</h1>
-                <img src={recipe.image} alt={recipe.name} />
+                <img
+                  src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`}
+                  alt={recipe.name}
+                />
               </div>
             ))}
         </div>
