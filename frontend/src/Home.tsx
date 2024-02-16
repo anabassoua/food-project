@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
-// Define a type for the extended ingredient
-type ExtendedIngredient = {
+type Recipe = {
   id: number;
   name: string;
-  image: string;
 };
 
 export default function Home() {
-  const [recipes, setRecipes] = useState<ExtendedIngredient[]>([]);
+  const recipes = useLoaderData() as Recipe[];
 
-  useEffect(() => {
-    fetch("http://localhost:8080/recipes/random")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.recipes[0].extendedIngredients);
-        const ingredients = data.recipes[0].extendedIngredients;
-        setRecipes(ingredients);
-      });
-  }, []);
-
-  // Check if recipes array is empty before accessing its properties
   return (
     <div className="container">
       <h1>What's in your Fridge ?</h1>
       <input type="text" className="search-bar" placeholder="Search..." />
+      <button>Search</button>
       <div className="trending-recipes">
         <div className="recipe-container">
           {recipes &&
