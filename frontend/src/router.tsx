@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./Home";
-import Recipes from "./Recipes";
+import Home from "./components/Home";
+import Recipes from "./components/Recipes";
 
 export const router = createBrowserRouter([
   {
@@ -15,10 +15,10 @@ export const router = createBrowserRouter([
   {
     path: "/recipes",
     element: <Recipes />,
-    loader: ({ request: { signal, url } }) => {
+    loader: async ({ request: { signal, url } }) => {
       const searchParams = new URL(url).searchParams;
       const ingredients = searchParams.get("ingredients") || "";
-      return fetch(
+      return await fetch(
         `http://localhost:8080/recipes/ingredients?ingredients=${ingredients}`,
         { signal }
       ).then((res) => res.json());
