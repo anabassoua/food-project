@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 type Recipe = {
   id: number;
@@ -15,7 +15,9 @@ export default function Recipes() {
         recipes.map((recipe) => (
           <div key={recipe.id}>
             <h2>{recipe.title}</h2>
-            <img src={recipe.image} />
+            <Link to={`/recipes/${recipe.id}`}>
+              <img src={recipe.image} />
+            </Link>
           </div>
         ))}
     </div>

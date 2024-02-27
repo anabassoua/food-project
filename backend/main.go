@@ -36,6 +36,13 @@ type RecipeInfo struct {
 	Image string `json:"image"`
 }
 
+type RecipeSummary struct {
+	ID int `json:"id"`
+	Title string `json:"title"`
+	Image string `json:"image"`
+	Summary string `json:"summary"`
+}
+
 // Function to handle GET request for random recipes
 func getRandomRecipes(c *gin.Context) {
 	// Get the Spoonacular API key from the environment variable
@@ -134,6 +141,58 @@ func getRecipesByIngredients(c *gin.Context){
 	c.IndentedJSON(http.StatusOK, recipes)
 }
 
+func getRecipesById(c *gin.Context){
+	// get the recipe id from the URL
+	id := c.Param("id")
+	if id == "" {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "No recipe Id provided."})
+		return
+	}
+	// get the API from the .env
+	spoonacularAPIKey := os.Getenv("API_KEY")
+	if spoonacularAPIKey == "" {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "API_KEY not set"})
+		return
+	}
+
+	// make the URL with the API
+	url := "https://api.spoonacular.com/recipes/" + id + "/information?apiKey=" + spoonacularAPIKey
+
+	// Get request to the API
+	resp, err := http.Get(url)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "failed to fetch information."})
+		return
+	}
+	defer resp.Body.Close()
+
+	// check the resp status code
+	if resp.StatusCode != http.StatusOK {
+		c.IndentedJSON(resp.StatusCode, gin.H{"error": "Spoonacular API return non-200 status code."})
+		return
+	}
+
+	// read the resp
+	respData, err := io.ReadAll(resp.Body)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "failed to read response body."})
+		return
+	}
+
+	//define struct that hold the resp json summary
+	var recipeSummary RecipeSummary
+
+	//unmarshall the resp body into the struct
+	if err := json.Unmarshal(respData, &recipeSummary); err != nil {
+		log.Println("Unmarshall err", err)
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode response body."})
+		return
+	}
+
+	// return only twhat we need
+	c.IndentedJSON(http.StatusOK, recipeSummary)
+}
+
 func main() {
 	// Load environment variables from the .env file
 	err := godotenv.Load()
@@ -155,6 +214,7 @@ func main() {
 	// Define the route for fetching random recipes
 	router.GET("/recipes/random", getRandomRecipes)
 	router.GET("/recipes/ingredients", getRecipesByIngredients)
+	router.GET("/recipes/:id", getRecipesById)
 
 	// Run the server on port 8080
 	router.Run("localhost:8080")

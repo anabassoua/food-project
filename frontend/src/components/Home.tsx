@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 import { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
 type Recipe = {
   id: number;
@@ -30,13 +30,15 @@ export default function Home() {
       <div className="trending-recipes">
         <div className="recipe-container">
           {recipes &&
-            recipes.map((recipe) => (
-              <div key={recipe.id} className="recipe-box">
+            recipes.map((recipe, index) => (
+              <div key={index} className="recipe-box">
                 <h1>{recipe.name}</h1>
-                <img
-                  src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`}
-                  alt={recipe.name}
-                />
+                <Link to={`/recipes/${recipe.id}`}>
+                  <img
+                    src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`}
+                    alt={recipe.name}
+                  />
+                </Link>
               </div>
             ))}
         </div>
