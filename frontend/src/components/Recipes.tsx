@@ -9,17 +9,19 @@ type Recipe = {
 export default function Recipes() {
   const recipes = useLoaderData() as Recipe[];
   return (
-    <div>
+    <div className="container">
       <h1>Recipes</h1>
-      {recipes &&
-        recipes.map((recipe) => (
-          <div key={recipe.id}>
-            <h2>{recipe.title}</h2>
-            <Link to={`/recipes/${recipe.id}`}>
-              <img src={recipe.image} />
-            </Link>
-          </div>
-        ))}
+      <div className="recipes-wrapper">
+        {recipes &&
+          recipes.map((recipe) => (
+            <div className="recipe-card" key={recipe.id}>
+              <h2>{recipe.title}</h2>
+              <Link to={`/recipes/${recipe.id}`}>
+                <img src={recipe.image} />
+              </Link>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

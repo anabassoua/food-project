@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,6 +18,7 @@ export default function Home() {
   const recipes = useLoaderData() as Recipe[];
 
   const handleSearch = () => {
+    if (searchValue === "") return;
     navigate(`/recipes?ingredients=${searchValue}`);
   };
 
@@ -33,7 +33,9 @@ export default function Home() {
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
+        <button className="btn" onClick={handleSearch}>
+          Search
+        </button>
       </div>
 
       <section className="swiper-slider">

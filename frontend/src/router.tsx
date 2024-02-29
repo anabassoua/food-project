@@ -8,9 +8,18 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Home />,
     loader: ({ request: { signal } }) => {
-      return fetch("http://localhost:8080/recipes/random", { signal })
-        .then((res) => res.json())
-        .then((data) => data.recipes);
+      const storedRecipes = localStorage.getItem("recipes");
+      if (storedRecipes) {
+        return JSON.parse(storedRecipes);
+      } else {
+        return fetch("http://localhost:8080/recipes/random", { signal })
+          .then((res) => res.json())
+          .then((data) => {
+            const recipes = data.recipes;
+            localStorage.setItem("recipes", JSON.stringify(recipes));
+            return recipes;
+          });
+      }
     },
   },
   {
