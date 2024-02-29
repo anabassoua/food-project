@@ -10,7 +10,7 @@ export const router = createBrowserRouter([
     loader: ({ request: { signal } }) => {
       return fetch("http://localhost:8080/recipes/random", { signal })
         .then((res) => res.json())
-        .then((data) => data.recipes[0].extendedIngredients);
+        .then((data) => data.recipes);
     },
   },
   {

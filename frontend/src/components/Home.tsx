@@ -1,10 +1,16 @@
 // import { useEffect, useState } from "react";
 import { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
 
 type Recipe = {
   id: number;
-  name: string;
+  title: string;
+  image: string;
 };
 
 export default function Home() {
@@ -17,32 +23,50 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
-      <h1>What's in your Fridge ?</h1>
-      <input
-        type="text"
-        className="search-bar"
-        placeholder="e.g: apple,flour,sugar..."
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
-      <button onClick={handleSearch}>Search</button>
-      <div className="trending-recipes">
-        <div className="recipe-container">
+    <>
+      <div className="input">
+        <h1>What's in your Fridge ?</h1>
+        <input
+          type="text"
+          className="search-bar"
+          placeholder="e.g: apple,flour,sugar..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+
+      <section className="swiper-slider">
+        <h3>Popular</h3>
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          spaceBetween={10}
+          slidesPerView={3}
+          pagination={true}
+          navigation={true}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          modules={[EffectCoverflow, Pagination, Navigation]}
+        >
           {recipes &&
             recipes.map((recipe, index) => (
-              <div key={index} className="recipe-box">
-                <h1>{recipe.name}</h1>
+              <SwiperSlide key={index} className="single-slide">
+                <p>{recipe.title}</p>
                 <Link to={`/recipes/${recipe.id}`}>
-                  <img
-                    src={`https://spoonacular.com/recipeImages/${recipe.id}-312x231.jpg`}
-                    alt={recipe.name}
-                  />
+                  <img src={recipe.image} alt={recipe.title} />
                 </Link>
-              </div>
+                <div className="gradient"></div>
+              </SwiperSlide>
             ))}
-        </div>
-      </div>
-    </div>
+        </Swiper>
+      </section>
+    </>
   );
 }
