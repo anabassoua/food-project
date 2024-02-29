@@ -13,13 +13,8 @@ import (
 )
 
 // Define a struct to match the structure of the JSON response
-type RecipeResponse struct {
-	Recipes []Recipe `json:"recipes"`
-}
-
-// Define the structure of a recipe
-type Recipe struct {
-	ExtendedIngredients []Ingredient `json:"extendedIngredients"`
+type RandomRecipesResponse struct {
+	Recipes []RecipeInfo `json:"recipes"`
 }
 
 // Define the structure of an ingredient in a recipe
@@ -53,7 +48,7 @@ func getRandomRecipes(c *gin.Context) {
 	}
 
 	// Construct the Spoonacular API URL
-	url := "https://api.spoonacular.com/recipes/random?apiKey=" + spoonacularAPIKey
+	url := "https://api.spoonacular.com/recipes/random?number=9&apiKey=" + spoonacularAPIKey
 
 	// Make a GET request to the Spoonacular API
 	resp, err := http.Get(url)
@@ -77,15 +72,15 @@ func getRandomRecipes(c *gin.Context) {
 	}
 
 	// Unmarshal the response body into a RecipeResponse struct
-	var recipeResponse RecipeResponse
-	if err := json.Unmarshal(responseData, &recipeResponse); err != nil {
+	var randomRecipes RandomRecipesResponse
+	if err := json.Unmarshal(responseData, &randomRecipes); err != nil {
 		log.Println("Unmarshal error:", err)
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "Failed to decode response body"})
 		return
 	}
 
 	// Return the recipes
-	c.IndentedJSON(http.StatusOK, recipeResponse)
+	c.IndentedJSON(http.StatusOK, randomRecipes)
 }
 
 // Function to handle GET request for recipes by ingredients
