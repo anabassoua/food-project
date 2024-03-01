@@ -61,10 +61,10 @@ export default function Home() {
             recipes.map((recipe, index) => (
               <SwiperSlide key={index} className="single-slide">
                 <p>{recipe.title}</p>
+                <img src={recipe.image} alt={recipe.title} />
                 <Link to={`/recipes/${recipe.id}`}>
-                  <img src={recipe.image} alt={recipe.title} />
+                  <div className="gradient"></div>
                 </Link>
-                <div className="gradient"></div>
               </SwiperSlide>
             ))}
         </Swiper>

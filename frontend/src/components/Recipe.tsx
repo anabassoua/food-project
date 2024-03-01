@@ -9,6 +9,19 @@ type Recipe = {
 
 export default function Recipe() {
   const recipe = useLoaderData() as Recipe;
-  console.log(recipe);
-  return <h1>{recipe.id}</h1>;
+
+  const createMarkup = (htmlString: string) => {
+    return { __html: htmlString };
+  };
+
+  return (
+    <div className="card-recipe">
+      <p className="title-recipe">{recipe.title}</p>
+      <img src={recipe.image} alt="" className="img-recipe" />
+      <div
+        className="summary-recipe"
+        dangerouslySetInnerHTML={createMarkup(recipe.summary)}
+      />
+    </div>
+  );
 }
