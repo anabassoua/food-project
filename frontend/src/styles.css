@@ -149,10 +149,10 @@ h1 {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin: 40px auto; /* Center the card horizontally */
+  margin: 40px auto;
   margin-bottom: 20px;
-  width: 80%; /* Adjust the width as needed */
-  max-width: 800px; /* Limit the width to prevent it from becoming too wide */
+  width: 80%;
+  max-width: 800px;
 }
 
 .title-recipe {
