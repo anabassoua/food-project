@@ -12,7 +12,9 @@ export const router = createBrowserRouter([
       if (storedRecipes) {
         return JSON.parse(storedRecipes);
       } else {
-        return fetch("http://localhost:8080/recipes/random", { signal })
+        return fetch("https://findrecipeappid.netlify.app/recipes/random", {
+          signal,
+        })
           .then((res) => res.json())
           .then((data) => {
             const recipes = data.recipes;
@@ -32,7 +34,7 @@ export const router = createBrowserRouter([
           const searchParams = new URL(url).searchParams;
           const ingredients = searchParams.get("ingredients") || "";
           return await fetch(
-            `http://localhost:8080/recipes/ingredients?ingredients=${ingredients}`,
+            `https://findrecipeappid.netlify.app/recipes/ingredients?ingredients=${ingredients}`,
             { signal }
           ).then((res) => res.json());
         },
@@ -41,9 +43,12 @@ export const router = createBrowserRouter([
         path: ":recipeId",
         element: <Recipe />,
         loader: ({ params, request: { signal } }) => {
-          return fetch(`http://localhost:8080/recipes/${params.recipeId}`, {
-            signal,
-          });
+          return fetch(
+            `https://findrecipeappid.netlify.app/recipes/${params.recipeId}`,
+            {
+              signal,
+            }
+          );
         },
       },
     ],
