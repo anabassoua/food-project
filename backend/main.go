@@ -200,7 +200,7 @@ func main() {
 
 	// Set up CORS middleware
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:5173", "https://findrecipeappid.netlify.app"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "DELETE", "GET"},
 		AllowHeaders:     []string{"Content-Type"},
 		AllowCredentials: true,
